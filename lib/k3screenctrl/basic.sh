@@ -17,6 +17,12 @@ fi
 
 FW_VERSION=${BUILD_ID:0:17}
 
+if [ $(uci get k3screenctrl.@general[0].cputemp) -eq 1 ]; then
+    echo $HW_VERSION $CPU_TEMP
+else
+    echo $HW_VERSION
+fi
+
 echo $PRODUCT_NAME
 echo $HW_VERSION
 echo $FW_VERSION
