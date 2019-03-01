@@ -237,7 +237,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 scriptsdir = $(prefix)/lib/k3screenctrl
-dist_scripts_DATA = k3screenctrl/wan.sh k3screenctrl/basic.sh k3screenctrl/wifi.sh k3screenctrl/port.sh
+dist_scripts_DATA =k3screenctrl/weather.sh k3screenctrl/host.sh k3screenctrl/wan.sh k3screenctrl/basic.sh k3screenctrl/wifi.sh k3screenctrl/port.sh
 all: all-am
 
 .SUFFIXES:
