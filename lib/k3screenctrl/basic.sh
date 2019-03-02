@@ -10,15 +10,9 @@ MAC_ADDR=$(ifconfig $WAN_IFNAME | grep -oE "([0-9A-Z]{2}:){5}[0-9A-Z]{2}")
 
 CPU_TEMP=$(($(cat /sys/class/thermal/thermal_zone0/temp) / 1000))
 
-HW_VERSION_CACHE_FILE=/tmp/hw_version
-if [ -e "$HW_VERSION_CACHE_FILE" ]; then
-    HW_VERSION=$(cat $HW_VERSION_CACHE_FILE)
-else
-    HW_VERSION=$(nvram get hd_version)
-    echo $HW_VERSION > $HW_VERSION_CACHE_FILE
-fi
-
-FW_VERSION=${BUILD_ID:0:17}
+HW_VERSION="A1"
+#${LEDE_DEVICE_REVISION:0:2}
+FW_VERSION=${DISTRIB_REVISION:0:17}
 
 echo $PRODUCT_NAME
 
@@ -28,5 +22,6 @@ else
     echo $HW_VERSION
 fi
 
+echo $FW_VERSION
 echo $FW_VERSION
 echo $MAC_ADDR
