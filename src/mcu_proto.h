@@ -77,7 +77,8 @@ typedef enum _key_code {
 
 /* REQUEST_SWITCH_PAGE */
 typedef enum _page {
-    PAGE_BASIC_INFO = 1,
+    PAGE_UPGRADE_INFO = 1,
+    PAGE_BASIC_INFO,
     PAGE_PORTS,
     PAGE_WAN,
     PAGE_WEATHER,
@@ -102,8 +103,11 @@ typedef struct _port_info {
 /* REQUEST_UPDATE_WAN */
 typedef struct _wan_info {
     unsigned int is_connected;
+    char ip[16];
     unsigned int tx_bytes_per_sec;
     unsigned int rx_bytes_per_sec;
+    unsigned int flag;
+    unsigned int mode;
 } WAN_INFO;
 
 struct _wifi_radio_info {
@@ -144,6 +148,7 @@ typedef struct _basic_info {
     char product_name[8];
     char hw_version[8];
     char fw_version[24];
+    char sw_version[24];
     char mac_addr_base[18];
 } BASIC_INFO;
 
