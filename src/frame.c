@@ -15,13 +15,13 @@ void (*g_frame_received_callback)(const unsigned char *frame, int len);
 
 int frame_send(const unsigned char *data, int len) {
     /* Allocate max possible space (escape every byte, with header/trailer) */
-    unsigned char *buf = (unsigned char *)malloc(len * 2 + 4);
+    unsigned char *buf = (unsigned char *)malloc(len * 2 + 6);
     if (buf <= 0) {
         syslog(LOG_ERR, "unable to allocate memory for TX buffer: %s",
                strerror(errno));
         return FAILURE;
     }
-    bzero(buf, len * 2 + 4);
+    bzero(buf, len * 2 + 6);
 
     /* Stage 1. Add header */
     int buf_pos = 0;
