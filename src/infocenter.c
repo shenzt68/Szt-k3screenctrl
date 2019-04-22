@@ -32,37 +32,37 @@ struct _token_store {
 /* Use the value rather than its address for x */
 #define TOKEN_STRING_OVERWRITE_STORE(x)                                        \
     {                                                                          \
-        .str_overwrite_storage = (x), .type = TOKEN_STRING_OVERWRITE,          \
+        .ts.str_overwrite_storage = (x), .type = TOKEN_STRING_OVERWRITE,          \
         .storage_len = sizeof((x)),                                            \
     }
 #define TOKEN_STRING_NEW_STORE(x)                                              \
     {                                                                          \
-        .str_new_storage = &(x), .type = TOKEN_STRING_NEW,                     \
+        .ts.str_new_storage = &(x), .type = TOKEN_STRING_NEW,                     \
         .storage_len = sizeof((x)),                                            \
     }
 #define TOKEN_UINT_STORE(x)                                                    \
-    { .uint_storage = &(x), .type = TOKEN_UINT, .storage_len = sizeof((x)), }
+    { .ts.uint_storage = &(x), .type = TOKEN_UINT, .storage_len = sizeof((x)), }
 #define TOKEN_BYTE_STORE(x)                                                    \
-    { .byte_storage = &(x), .type = TOKEN_BYTE, .storage_len = sizeof((x)), }
+    { .ts.byte_storage = &(x), .type = TOKEN_BYTE, .storage_len = sizeof((x)), }
 
 /* Will free(token) if needed */
 static void token_store(const struct _token_store *store_info, char *token) {
     switch (store_info->type) {
     case TOKEN_STRING_NEW:
-        *store_info->str_new_storage = token;
+        *store_info->ts.str_new_storage = token;
         break;
     case TOKEN_STRING_OVERWRITE:
-        strncpy(store_info->str_overwrite_storage, token,
+        strncpy(store_info->ts.str_overwrite_storage, token,
                 store_info->storage_len - 1);
-        store_info->str_overwrite_storage[store_info->storage_len - 1] = 0;
+        store_info->ts.str_overwrite_storage[store_info->storage_len - 1] = 0;
         free(token);
         break;
     case TOKEN_UINT:
-        *store_info->uint_storage = atoi(token);
+        *store_info->ts.uint_storage = atoi(token);
         free(token);
         break;
     case TOKEN_BYTE:
-        *store_info->byte_storage = atoi(token);
+        *store_info->ts.byte_storage = atoi(token);
         free(token);
         break;
     }
@@ -127,6 +127,7 @@ static int update_basic_info() {
         TOKEN_STRING_OVERWRITE_STORE(g_basic_info.product_name),
         TOKEN_STRING_OVERWRITE_STORE(g_basic_info.hw_version),
         TOKEN_STRING_OVERWRITE_STORE(g_basic_info.fw_version),
+        TOKEN_STRING_OVERWRITE_STORE(g_basic_info.sw_version),
         TOKEN_STRING_OVERWRITE_STORE(g_basic_info.mac_addr_base),
     };
     return update_storage_from_script(CFG->basic_info_script, stores,
@@ -150,8 +151,11 @@ WAN_INFO g_wan_info;
 static int update_wan_info() {
     static const struct _token_store stores[] = {
         TOKEN_UINT_STORE(g_wan_info.is_connected),
+        TOKEN_STRING_OVERWRITE_STORE(g_wan_info.ip),
         TOKEN_UINT_STORE(g_wan_info.tx_bytes_per_sec),
         TOKEN_UINT_STORE(g_wan_info.rx_bytes_per_sec),
+        TOKEN_UINT_STORE(g_wan_info.flag),
+        TOKEN_UINT_STORE(g_wan_info.mode),
     };
     return update_storage_from_script(CFG->wan_script, stores,
                                       sizeof(stores) / sizeof(stores[0]));
