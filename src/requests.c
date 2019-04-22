@@ -8,6 +8,7 @@
 #include "mcu_proto.h"
 #include "serial_port.h"
 
+#define ARRAY_SIZED_STRCPY(dst, src) strncpy((dst), (src), sizeof((dst)));
 static int request_send_raw(REQUEST_TYPE type, const void *data, int len) {
     unsigned char *cmdbuf = (unsigned char *)malloc(len + 2);
     if (cmdbuf < 0) {
@@ -41,10 +42,13 @@ int request_notify_event(EVENT event) {
 
 int request_update_wan(int is_connected, int tx_Bps, int rx_Bps) {
     WAN_INFO waninfo;
-
+    bzero(&waninfo, sizeof(waninfo));
     waninfo.is_connected = is_connected;
+    ARRAY_SIZED_STRCPY(waninfo.ip, ip);
     waninfo.tx_bytes_per_sec = tx_Bps;
     waninfo.rx_bytes_per_sec = rx_Bps;
+    waninfo.flag = flag;
+    waninfo.mode = mode;
 
     return request_send_raw(REQUEST_UPDATE_WAN, &waninfo, sizeof(waninfo));
 }
@@ -54,10 +58,10 @@ int request_update_basic_info(const char *prod_name, const char *hw_ver,
     BASIC_INFO basic_info;
     bzero(&basic_info, sizeof(basic_info));
 
-#define ARRAY_SIZED_STRCPY(dst, src) strncpy((dst), (src), sizeof((dst)));
     ARRAY_SIZED_STRCPY(basic_info.product_name, prod_name);
     ARRAY_SIZED_STRCPY(basic_info.hw_version, hw_ver);
     ARRAY_SIZED_STRCPY(basic_info.fw_version, fw_ver);
+    ARRAY_SIZED_STRCPY(basic_info.sw_version, sw_ver);
     ARRAY_SIZED_STRCPY(basic_info.mac_addr_base, mac_addr);
 
     return request_send_raw(REQUEST_UPDATE_BASIC_INFO, &basic_info,
