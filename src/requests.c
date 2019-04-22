@@ -57,7 +57,6 @@ int request_update_basic_info(const char *prod_name, const char *hw_ver,
                               const char *fw_ver, const char *sw_ver, const char *mac_addr) 
     BASIC_INFO basic_info;
     bzero(&basic_info, sizeof(basic_info));
-
     ARRAY_SIZED_STRCPY(basic_info.product_name, prod_name);
     ARRAY_SIZED_STRCPY(basic_info.hw_version, hw_ver);
     ARRAY_SIZED_STRCPY(basic_info.fw_version, fw_ver);
