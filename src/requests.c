@@ -33,11 +33,11 @@ int request_mcu_version() {
 }
 
 int request_switch_page(PAGE page) {
-    return request_send_raw(REQUEST_SWITCH_PAGE, &page, 4);
+    return request_send_raw(REQUEST_SWITCH_PAGE, &page, 6);
 }
 
 int request_notify_event(EVENT event) {
-    return request_send_raw(REQUEST_NOTIFY_EVENT, &event, 4);
+    return request_send_raw(REQUEST_NOTIFY_EVENT, &event, 6);
 }
 
 int request_update_wan(int is_connected, const char *ip, int tx_Bps, int rx_Bps, int flag, int mode) {
