@@ -32,37 +32,37 @@ struct _token_store {
 /* Use the value rather than its address for x */
 #define TOKEN_STRING_OVERWRITE_STORE(x)                                        \
     {                                                                          \
-        .ts.str_overwrite_storage = (x), .type = TOKEN_STRING_OVERWRITE,          \
+        .str_overwrite_storage = (x), .type = TOKEN_STRING_OVERWRITE,          \
         .storage_len = sizeof((x)),                                            \
     }
 #define TOKEN_STRING_NEW_STORE(x)                                              \
     {                                                                          \
-        .ts.str_new_storage = &(x), .type = TOKEN_STRING_NEW,                     \
+        .str_new_storage = &(x), .type = TOKEN_STRING_NEW,                     \
         .storage_len = sizeof((x)),                                            \
     }
 #define TOKEN_UINT_STORE(x)                                                    \
-    { .ts.uint_storage = &(x), .type = TOKEN_UINT, .storage_len = sizeof((x)), }
+    { .uint_storage = &(x), .type = TOKEN_UINT, .storage_len = sizeof((x)), }
 #define TOKEN_BYTE_STORE(x)                                                    \
-    { .ts.byte_storage = &(x), .type = TOKEN_BYTE, .storage_len = sizeof((x)), }
+    { .byte_storage = &(x), .type = TOKEN_BYTE, .storage_len = sizeof((x)), }
 
 /* Will free(token) if needed */
 static void token_store(const struct _token_store *store_info, char *token) {
     switch (store_info->type) {
     case TOKEN_STRING_NEW:
-        *store_info->ts.str_new_storage = token;
+        *store_info->str_new_storage = token;
         break;
     case TOKEN_STRING_OVERWRITE:
-        strncpy(store_info->ts.str_overwrite_storage, token,
+        strncpy(store_info->str_overwrite_storage, token,
                 store_info->storage_len - 1);
-        store_info->ts.str_overwrite_storage[store_info->storage_len - 1] = 0;
+        store_info->str_overwrite_storage[store_info->storage_len - 1] = 0;
         free(token);
         break;
     case TOKEN_UINT:
-        *store_info->ts.uint_storage = atoi(token);
+        *store_info->uint_storage = atoi(token);
         free(token);
         break;
     case TOKEN_BYTE:
-        *store_info->ts.byte_storage = atoi(token);
+        *store_info->byte_storage = atoi(token);
         free(token);
         break;
     }
