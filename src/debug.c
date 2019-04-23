@@ -87,7 +87,3 @@ static void print_buf(const unsigned char *buf, int len) {
     }
     printf("\n");
 }
-void print_mcu_version(){
-    int ver=request_mcu_version();
-    printf("MCU_VERSION:%x\n",ver);
-}
