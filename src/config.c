@@ -54,7 +54,7 @@ void config_parse_cmdline(int argc, char *argv[]) {
         {"wan-script", required_argument, NULL, 'n'},
         {"basic-info-script", required_argument, NULL, 'i'},
         {0, 0, 0, 0}};
-    static const char *short_opts = "hfrtd:m:s:w:p:n:i:";
+    static const char *short_opts = "hfrtd:m:s:e:w:p:n:i:";
 
     int opt_index;
     signed char result;
@@ -122,8 +122,8 @@ void config_load_defaults() {
 }
 
 void config_free() {
-    free(g_config.weather_script);
     free(g_config.host_script);
+    free(g_config.weather_script);
     free(g_config.wifi_script);
     free(g_config.port_script);
     free(g_config.wan_script);
